@@ -315,10 +315,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11409838, guid: de7915dc399fac84da2ccf286bbc2df8, type: 2}
-      propertyPath: StartingBeep
-      value: 
-      objectReference: {fileID: 8300000, guid: a5866336073df0d44b54e6040fe9df9e, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: de7915dc399fac84da2ccf286bbc2df8, type: 2}
   m_IsPrefabParent: 0
