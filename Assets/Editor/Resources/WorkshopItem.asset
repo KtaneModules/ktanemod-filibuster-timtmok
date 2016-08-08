@@ -11,8 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf2299c8864afe4ab42466f546ae20d, type: 3}
   m_Name: WorkshopItem
   m_EditorClassIdentifier: 
-  WorkshopPublishedFileID: 0
+  WorkshopPublishedFileID: 739663396
   Title: Filibuster
-  Description: 
-  PreviewImage: {fileID: 0}
-  Tags: []
+  Description: This is prolonged speech that obstructs progress in a legislative assembly
+    while not technically contravening the required procedures. When the needy module
+    activates, be prepared to talk non-stop while it's active or receive a strike.
+  PreviewImage: {fileID: 2800000, guid: 9b5c2c0d5013def4180fa8419a4a1c43, type: 3}
+  Tags:
+  - Needy Module
