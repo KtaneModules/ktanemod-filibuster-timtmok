@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -17,6 +16,7 @@ public class FilibusterModule : MonoBehaviour
 	public Material AnalogLevelMaterial;
 	public AudioClip WarningBeep;
 	public AudioClip StartingBeep;
+	private FilibusterSettings settings;
 
 	private float _timeElapsed;
 	private float _failureTimeElapsed;
@@ -30,7 +30,7 @@ public class FilibusterModule : MonoBehaviour
 	private const int SampleWindow = 60;
 	private const string SettingsFile = "settings.json";
 
-	private float _failureThreshold;
+	private float _MicThreshold;
 	private static readonly Color ArmedColourOn = new Color(255, 0, 0, 1f);
 	private static readonly Color ArmedColourOff = new Color(255, 0, 0, 0.2f);
 
@@ -52,23 +52,9 @@ public class FilibusterModule : MonoBehaviour
 	private void InitializeSettings()
 	{
 		const float defaultThreshold = 25.0f;
-		
-		try
-		{
-			var settingsFilePath = System.Reflection.Assembly.GetAssembly(GetType()).Location;
-			var path = Path.GetDirectoryName(settingsFilePath) + "\\" + SettingsFile;
-			Debug.Log(path);
-			var settingsText = File.ReadAllText(path);
-			Debug.Log("Filibuster settings: " + settingsText);
-			var filibusterSettings = JsonConvert.DeserializeObject<FilibusterSettings>(settingsText);
-			var customThreshold = filibusterSettings.MicThreshold;
-			_failureThreshold = customThreshold > 100 || customThreshold < 0 ? defaultThreshold : customThreshold;
-		}
-		catch (Exception)
-		{
-			_failureThreshold = defaultThreshold;
-			Debug.Log("Error reading filibuster settings");
-		}
+		settings = JsonConvert.DeserializeObject<FilibusterSettings>(GetComponent<KMModSettings>().Settings);
+		Debug.Log(settings);
+		_MicThreshold = settings.MicThreshold;
 	}
 
 	//mic initialization
@@ -175,7 +161,7 @@ public class FilibusterModule : MonoBehaviour
 
 	private void UpdateWarningSound(float micAverage)
 	{
-		if (micAverage < _failureThreshold)
+		if (micAverage < _MicThreshold)
 		{
 			GetComponent<KMAudio>().PlaySoundAtTransform(WarningBeep.name, transform);
 		}
@@ -183,7 +169,7 @@ public class FilibusterModule : MonoBehaviour
 
 	private void CheckForFailure(float micAverage)
 	{
-		if (micAverage < _failureThreshold)
+		if (micAverage < _MicThreshold)
 		{
 			_numConsecutiveFailures++;
 			Debug.Log("Fail: " + _numConsecutiveFailures);
@@ -193,7 +179,7 @@ public class FilibusterModule : MonoBehaviour
 			_numConsecutiveFailures = 0;
 		}
 
-		if (_numConsecutiveFailures > 2)
+		if (_numConsecutiveFailures >= settings.FailureThreshold)
 		{
 			GetComponent<KMNeedyModule>().HandleStrike();
 			OnNeedyDeactivate();
@@ -221,8 +207,8 @@ public class FilibusterModule : MonoBehaviour
 
 	private void UpdateBar(float average)
 	{
-		var warningThreshold = _failureThreshold * 2;
-		if (average < _failureThreshold)
+		var warningThreshold = _MicThreshold * 2;
+		if (average < _MicThreshold)
 		{
 			AnalogLevelMaterial.color = Color.red;
 		}
@@ -280,4 +266,5 @@ public class FilibusterModule : MonoBehaviour
 public class FilibusterSettings
 {
 	public float MicThreshold;
+	public int FailureThreshold;
 }
