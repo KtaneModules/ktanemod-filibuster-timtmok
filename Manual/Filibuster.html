@@ -34,9 +34,16 @@
 			volume.
 			</p>
 			<p>
-			There is a <i>settings.json</i> file in the mod's folder to customize the failure volume threshold. You can open 
-			this file in a text editor and set a value from 0.0 - 100.0 to adjust for your microphone. The setting is read
-			when the mission starts.
+			There is a <i>modSettings.json</i> file in the mod's folder (<i>SteamLibrary\steamapps\workshop\content\341800\739663396</i>) to customize the thresholds.
+			You can open this file in a text editor to edit the settings. Restart the game if you are changing these values.
+			</p>
+			<p>
+			This is the default for the file:<br>
+			{"MicThreshold": 25.0, "FailureThreshold": 3}
+			</p>
+			<p>
+			<i>MicThreshold</i> - a value from 0.0 - 100.0 to adjust for your microphone.<br>
+			<i>FailureThreshold</i> - an integer value for the number of seconds of failing the mic check before a strike. I recommend this stay in the range of 1 - 10.
 			</p>
         </div>
     </div>

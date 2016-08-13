@@ -53,8 +53,14 @@ public class FilibusterModule : MonoBehaviour
 	{
 		const float defaultThreshold = 25.0f;
 		settings = JsonConvert.DeserializeObject<FilibusterSettings>(GetComponent<KMModSettings>().Settings);
-		Debug.Log(settings);
-		_MicThreshold = settings.MicThreshold;
+		if (settings.MicThreshold < 100f)
+		{
+			_MicThreshold = settings.MicThreshold;
+		}
+		else
+		{
+			_MicThreshold = defaultThreshold;
+		}
 	}
 
 	//mic initialization
